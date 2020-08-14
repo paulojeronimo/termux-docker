@@ -1,0 +1,33 @@
+$ ./build-all.sh
+Sending build context to Docker daemon  91.03MB
+Step 1/29 : FROM scratch
+ --->
+Step 2/29 : ENV ANDROID_DATA     /data
+ ---> Using cache
+ ---> 436ff2676417
+Step 3/29 : ENV ANDROID_ROOT     /system
+ ---> Using cache
+ ---> 782c8d800e82
+Step 4/29 : ENV HOME             /data/data/com.termux/files/home
+ ---> Using cache
+ ---> c4b4da6ce13f
+Step 5/29 : ENV LANG             en_US.UTF-8
+ ---> Using cache
+ ---> 53582569df4f
+Step 6/29 : ENV PREFIX           /data/data/com.termux/files/usr
+ ---> Using cache
+ ---> 188148ff1495
+Step 7/29 : ENV TMPDIR           /data/data/com.termux/files/usr/tmp
+ ---> Using cache
+ ---> a97e26cca1d7
+Step 8/29 : ENV TZ               UTC
+ ---> Using cache
+ ---> ff59e1f6dd49
+Step 9/29 : ENV PATH /system/bin
+ ---> Using cache
+ ---> ba977e069b5f
+Step 10/29 : SHELL ["/system/bin/sh", "-c"]
+ ---> Using cache
+ ---> 1cbeb1ac9e64
+Step 11/29 : ADD http://dl.bintray.com/termux/bootstrap/bootstrap-i686-v25.zip /data/data/com.termux/files/bootstrap.zip
+ADD failed: failed to GET http://dl.bintray.com/termux/bootstrap/bootstrap-i686-v25.zip with status 403 Forbidden: <?xml version="1.0" encoding="UTF-8"?><Error><Code>AccessDenied</Code><Message>Access denied</Message></Error>

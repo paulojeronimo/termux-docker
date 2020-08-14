@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
+set -eou pipefail
+cd `dirname "$0"`
+source ./config.sh &> /dev/null || source ./config.sample.sh
+
+md5=$(echo $PWD|md5)
 
 if [ "$(basename "$0")" = "run-x86_64.sh" ]; then
-	CONTAINER_NAME="termux-x86_64"
-	DOCKER_IMAGE_NAME="xeffyr/termux:x86_64"
+	CONTAINER_NAME="${PWD##*/}-x86_64-$(echo $md5|cut -c 1-8)"
+	DOCKER_IMAGE_NAME=$DOCKER_X86_64_TAG
 else
-	CONTAINER_NAME="termux-i686"
-	DOCKER_IMAGE_NAME="xeffyr/termux:latest"
+	CONTAINER_NAME="${PWD##*/}-i686-$(echo $md5|cut -c 1-8)"
+	DOCKER_IMAGE_NAME=$DOCKER_I686_TAG
 fi
 
-docker start "$CONTAINER_NAME" > /dev/null 2> /dev/null || {
+docker start "$CONTAINER_NAME" &> /dev/null || {
 	echo "Creating new container..."
 	docker run \
+		--volume "$PWD":/base \
+		--workdir /base \
 		--detach \
 		--name "$CONTAINER_NAME" \
 		--tty \
