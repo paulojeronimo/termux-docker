@@ -4,11 +4,22 @@ DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_URL:-'https://index.docker.io/v1/'}
 
 cd `dirname "$0"`
 source ./config.sh &> /dev/null || source ./config.sample.sh
-which jq &> /dev/null || { echo "Install jq!"; exit 1; }
+which jq &> /dev/null || {
+  case "$OSTYPE" in
+    linux-gnu)
+      # TODO: Fix this - intentionally coded (for) and tested only Ubuntu
+      sudo apt install jq;;
+    darwin*)
+      brew install jq;;
+    *) echo "Install jq!"; exit 1
+  esac
+}
 
 # Ref: https://stackoverflow.com/a/54423358/8410767
 is_logged_in() {
-  jq -e --arg url $DOCKER_REGISTRY_URL '.auths | has($url)' ~/.docker/config.json > /dev/null;
+  local config=~/.docker/config.json
+  [ -f $config ] || return 1
+  jq -e --arg url $DOCKER_REGISTRY_URL '.auths | has($url)' $config > /dev/null
 }
 
 # Code to solve issues/1.txt temporarily

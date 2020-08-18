@@ -3,7 +3,17 @@ set -eou pipefail
 cd `dirname "$0"`
 source ./config.sh &> /dev/null || source ./config.sample.sh
 
-md5=$(echo $PWD|md5)
+case "$OSTYPE" in
+  darwin*)
+    md5sum=$(which md5);;
+  linux-gnu)
+    # TODO: Fix this for other Linux flavors ...
+    md5sum=$(which md5sum);;
+  *)
+    echo "$0 not supported for $OSTYPE!"
+    exit 1
+esac
+md5=$(echo $PWD|$md5sum)
 
 if [ "$(basename "$0")" = "run-x86_64.sh" ]; then
 	CONTAINER_NAME="${PWD##*/}-x86_64-$(echo $md5|cut -c 1-8)"
