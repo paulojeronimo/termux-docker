@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 set -eou pipefail
-cd `dirname "$0"`
-source ./config.sh &> /dev/null || source ./config.sample.sh
+BASE_DIR=`cd "$(dirname "$0")"; pwd -P`
+cd "$BASE_DIR"
+
+config=./config.sh
+source $config &> /dev/null || {
+  config=./config.sample.sh
+  source $config
+}
+echo "Configuration read from $PWD/${config#./}"
 
 case "$OSTYPE" in
   darwin*)

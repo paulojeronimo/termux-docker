@@ -6,9 +6,11 @@ cd `dirname "$0"`
 source ./config.sh &> /dev/null || source ./config.sample.sh
 which jq &> /dev/null || {
   case "$OSTYPE" in
-    linux-gnu)
+    linux*)
       # TODO: Fix this - intentionally coded (for) and tested only Ubuntu
-      sudo apt install jq;;
+      echo "Will need to install jq!"
+      echo "Please, provide your sudo password ..."
+      sudo apt install -y jq;;
     darwin*)
       brew install jq;;
     *) echo "Install jq!"; exit 1
